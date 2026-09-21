@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+env/
+results/*
+!results/.gitkeep
+wordlists/*.txt
+*.log
+*.db
+.DS_Store
