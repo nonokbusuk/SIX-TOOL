@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Log SX-TOOLS V6</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0d6efd;
+        }
+        h3 {
+            color: #198754;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .feature-section {
+            margin-bottom: 40px;
+        }
+        .highlight {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Change Log SX-TOOLS V6</h1>
+
+    <div class="feature-section">
+        <h2>FTP Brute Force</h2>
+        <h3>✨ New Features</h3>
+        <ul>
+            <li>Support for FTP and FTPS</li>
+            <li>Automatic Open Port Detection</li>
+            <li>Proxy Support (HTTP, HTTPS, SOCKS4, SOCKS5)</li>
+            <li>Intelligent Proxy Rotation</li>
+            <li>Non-Proxy Fallback</li>
+            <li>Multithreading (Customizable Thread Count)</li>
+            <li>Automatic Stop When Credentials Found</li>
+            <li>Optional Debug Mode</li>
+            <li>Automatic Logging to Files</li>
+            <li>Wordlist Loader</li>
+            <li>Randomized Login Combos</li>
+            <li>Random Delay Between Requests</li>
+        </ul>
+        <h3>🚀 Advantages Over Similar Tools</h3>
+        <ul>
+            <li>Error-based proxy rotation for efficiency</li>
+            <li>Built-in port scanner, no external tool needed</li>
+            <li>Automatic fallback to non-proxy mode</li>
+            <li>Global brute force mode for multiple servers</li>
+            <li>Safe multithreading with stop-flag</li>
+            <li>Full compatibility with various proxy types</li>
+            <li>Modular design with comprehensive error handling</li>
+        </ul>
+    </div>
+
+    <div class="feature-section">
+        <h2>Proxy Checker/Validator</h2>
+        <h3>✨ Key Features</h3>
+        <ul>
+            <li>Automatic Proxy Parsing</li>
+            <li>HTTP Proxy Skipping</li>
+            <li>FTP Server Proxy Validation (real connection test)</li>
+            <li>Multithreading (30 Threads by Default)</li>
+            <li>Proxy Response Time Measurement</li>
+            <li>Save Valid Proxies to File</li>
+            <li>Real-time Visual Feedback</li>
+            <li>Automatic Cleanup of Invalid Proxies</li>
+        </ul>
+        <h3>🚀 Advantages Over Similar Tools</h3>
+        <ul>
+            <li>Automatic detection of proxy type</li>
+            <li>Focus on high-quality SOCKS proxies</li>
+            <li>Real FTP connection testing, not just port checks</li>
+            <li>Efficient multithreading for large lists</li>
+            <li>Clean, ready-to-use output for other tools</li>
+            <li>Automatic skipping of unsupported HTTP proxies</li>
+        </ul>
+    </div>
+
+    <div class="feature-section">
+        <h2>Mini FTP Shell</h2>
+        <h3>✨ Key Features</h3>
+        <ul>
+            <li>Manual FTP Login</li>
+            <li>Interactive Mini FTP Shell</li>
+            <li>Supported Commands: ls, cd, pwd, cat, mkdir, rm, rename, download, upload, quit</li>
+            <li>Robust Error Handling</li>
+            <li>Color-Coded Output</li>
+            <li>Lightweight & Portable</li>
+        </ul>
+        <h3>🚀 Advantages Over Similar Tools</h3>
+        <ul>
+            <li>Lightweight and simple</li>
+            <li>Terminal-like shell experience</li>
+            <li>Supports essential file operations</li>
+            <li>Cleaner experience with color-coded feedback</li>
+            <li>Direct upload/download within the shell</li>
+            <li>Automatic command error catching</li>
+        </ul>
+
+        <h3>📋 Quick Comparison</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>ftpLogin.py</th>
+                    <th>FTP.exe (Windows Default)</th>
+                    <th>FileZilla</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Lightweight interactive shell</td>
+                    <td>Yes</td>
+                    <td>Not practical</td>
+                    <td>No (GUI)</td>
+                </tr>
+                <tr>
+                    <td>Viewing file content (cat)</td>
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>Not directly</td>
+                </tr>
+                <tr>
+                    <td>Command-based file upload</td>
+                    <td>Yes</td>
+                    <td>Multiple steps required</td>
+                    <td>Manual click</td>
+                </tr>
+                <tr>
+                    <td>Color-coded feedback</td>
+                    <td>Yes</td>
+                    <td>No</td>
+                    <td>Yes (GUI)</td>
+                </tr>
+                <tr>
+                    <td>Resource usage</td>
+                    <td>Very lightweight</td>
+                    <td>Lightweight</td>
+                    <td>Heavy</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="feature-section">
+        <h2>System Requirements</h2>
+        <h3>📋 Operating System</h3>
+        <ul>
+            <li><strong>Minimal:</strong> Windows 7 SP1 (x86_64) or Windows Server 2008 R2</li>
+            <li><strong>Recommended:</strong> Windows 10/11 (x64) or Windows Server 2012 R2 and above</li>
+        </ul>
+        <h3>💻 Hardware</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Minimal</th>
+                    <th>Recommended</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CPU</td>
+                    <td>1 core @ 1 GHz</td>
+                    <td>2 modern cores @ 2 GHz+</td>
+                </tr>
+                <tr>
+                    <td>RAM</td>
+                    <td>4 GB</td>
+                    <td>8-32 GB</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
