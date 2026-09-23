@@ -1,0 +1,4 @@
+/wp-login.php?action=register
+/login.php?action=register
+/login/
+/?action=register
