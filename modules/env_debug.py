@@ -1,4 +1,7 @@
 """Menu 5 — Scanner ENV & Debug Method"""
+import os
+import random
+import string
 import requests
 from colorama import Fore, Style
 
@@ -24,12 +27,30 @@ def run():
     if not target.startswith("http"):
         target = "https://" + target
 
+    baseline_path = "/" + "".join(random.choices(string.ascii_lowercase + string.digits, k=16))
+    baseline = None
+    try:
+        baseline = requests.get(target.rstrip("/") + baseline_path, headers=HEADERS, timeout=10, allow_redirects=False)
+    except requests.RequestException as e:
+        print(f"{Fore.RED}[!] Target tidak dapat dijangkau: {e}{Style.RESET_ALL}")
+        return
+    print(f"{Fore.YELLOW}[*] Baseline soft-404: {baseline.status_code} ({len(baseline.content)} bytes){Style.RESET_ALL}")
+
+    def is_soft_404(r):
+        if baseline.status_code != 200:
+            return False
+        return r.status_code == 200 and (
+            r.content == baseline.content or len(r.content) == len(baseline.content)
+        )
+
     found = []
     for path in PATHS:
         url = target.rstrip("/") + path
         try:
             r = requests.get(url, headers=HEADERS, timeout=10, allow_redirects=False)
-            if r.status_code == 200:
+            if is_soft_404(r):
+                print(f"{Fore.YELLOW}[~] {url} -> soft-404 (diabaikan){Style.RESET_ALL}")
+            elif r.status_code == 200:
                 print(f"{Fore.GREEN}[200] {url} ({len(r.content)} bytes){Style.RESET_ALL}")
                 found.append(url)
             elif r.status_code in (301, 302, 403):
@@ -38,3 +59,8 @@ def run():
             pass
 
     print(f"\n{Fore.GREEN}[+] Selesai. Ditemukan {len(found)} file sensitif.{Style.RESET_ALL}")
+    if found:
+        os.makedirs("results", exist_ok=True)
+        with open("results/env_debug.txt", "w") as f:
+            f.write("\n".join(found))
+        print(f"{Fore.GREEN}[+] Disimpan ke results/env_debug.txt{Style.RESET_ALL}")

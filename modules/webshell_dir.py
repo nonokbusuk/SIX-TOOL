@@ -1,10 +1,16 @@
 """Menu 1 — WebShell Finder (Dir Scan with 48k Path)"""
 import os
+import random
+import string
 import requests
 from colorama import Fore, Style
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-WORDLIST = os.path.join("wordlists", "webshell_paths.txt")
+WORDLISTS = [
+    os.path.join("wordlists", "webshell_paths.txt"),
+    os.path.join("wordlists", "dir.txt"),
+    os.path.join("wordlists", "dir_IndexOf.txt"),
+]
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -29,6 +35,16 @@ def check_path(base, path, timeout=8):
     return None
 
 
+def get_baseline(target):
+    path = "/" + "".join(random.choices(string.ascii_lowercase + string.digits, k=16))
+    try:
+        r = requests.get(target.rstrip("/") + path, headers=HEADERS, timeout=10, allow_redirects=False)
+        return r
+    except requests.RequestException as e:
+        print(f"{Fore.RED}[!] Target tidak dapat dijangkau: {e}{Style.RESET_ALL}")
+        return None
+
+
 def run():
     print(f"{Fore.CYAN}[*] WebShell Finder — Dir Scan{Style.RESET_ALL}")
     target = input("URL target (https://example.com): ").strip()
@@ -38,16 +54,25 @@ def run():
     if not target.startswith("http"):
         target = "https://" + target
 
-    if not os.path.exists(WORDLIST):
-        print(f"{Fore.RED}[!] Wordlist tidak ditemukan: {WORDLIST}{Style.RESET_ALL}")
+    wordlist = next((w for w in WORDLISTS if os.path.exists(w)), None)
+    if wordlist is None:
+        print(f"{Fore.RED}[!] Wordlist tidak ditemukan: {WORDLISTS[0]} (atau dir.txt){Style.RESET_ALL}")
         print(f"{Fore.YELLOW}    Taruh file 'webshell_paths.txt' di folder wordlists/{Style.RESET_ALL}")
         return
 
-    with open(WORDLIST, "r", errors="ignore") as f:
+    with open(wordlist, "r", errors="ignore") as f:
         paths = [line.strip() for line in f if line.strip()]
+    print(f"{Fore.YELLOW}[*] Wordlist: {wordlist}{Style.RESET_ALL}")
 
     print(f"{Fore.YELLOW}[*] Total path: {len(paths)}{Style.RESET_ALL}")
     threads = int(input("Threads [default 20]: ").strip() or 20)
+
+    baseline = get_baseline(target)
+    if baseline is None:
+        return
+    if baseline.status_code == 200:
+        print(f"{Fore.YELLOW}[*] Baseline soft-404: {baseline.status_code} ({len(baseline.content)} bytes){Style.RESET_ALL}")
+    soft_404 = baseline.status_code == 200
 
     found = []
     with ThreadPoolExecutor(max_workers=threads) as ex:
@@ -57,9 +82,14 @@ def run():
                 res = fut.result()
                 if res:
                     status, url, size = res
-                    color = Fore.GREEN if status == 200 else Fore.YELLOW
-                    print(f"{color}[{status}] {url} ({size} bytes){Style.RESET_ALL}")
-                    found.append((status, url))
+                    if soft_404 and status == 200 and (
+                        size == len(baseline.content) or url == target.rstrip("/")
+                    ):
+                        pass
+                    else:
+                        color = Fore.GREEN if status == 200 else Fore.YELLOW
+                        print(f"{color}[{status}] {url} ({size} bytes){Style.RESET_ALL}")
+                        found.append((status, url))
                 if i % 100 == 0:
                     print(f"{Fore.CYAN}    ... {i}/{len(paths)} tested{Style.RESET_ALL}")
         except KeyboardInterrupt:
