@@ -1,0 +1,13 @@
+name: six-tool
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - requests>=2.31.0
+      - dnspython>=2.4.0
+      - beautifulsoup4>=4.12.0
+      - colorama>=0.4.6
+      - validators>=0.22.0
+      - tqdm>=4.66.0
