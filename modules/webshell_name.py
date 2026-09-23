@@ -6,7 +6,10 @@ import requests
 from colorama import Fore, Style
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-WORDLIST = os.path.join("wordlists", "webshell_names.txt")
+WORDLISTS = [
+    os.path.join("wordlists", "webshell_names.txt"),
+    os.path.join("wordlists", "shell.txt"),
+]
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -51,10 +54,11 @@ def run():
         target = "https://" + target
 
     names = list(DEFAULT_NAMES)
-    if os.path.exists(WORDLIST):
-        with open(WORDLIST, "r", errors="ignore") as f:
+    wordlist = next((w for w in WORDLISTS if os.path.exists(w)), None)
+    if wordlist:
+        with open(wordlist, "r", errors="ignore") as f:
             names += [line.strip() for line in f if line.strip()]
-        print(f"{Fore.YELLOW}[*] Wordlist dimuat: {len(names)} nama{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}[*] Wordlist dimuat ({wordlist}): {len(names)} nama{Style.RESET_ALL}")
     else:
         print(f"{Fore.YELLOW}[*] Wordlist tidak ada, pakai default: {len(names)} nama{Style.RESET_ALL}")
 

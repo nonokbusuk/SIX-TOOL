@@ -6,7 +6,11 @@ import requests
 from colorama import Fore, Style
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-WORDLIST = os.path.join("wordlists", "webshell_paths.txt")
+WORDLISTS = [
+    os.path.join("wordlists", "webshell_paths.txt"),
+    os.path.join("wordlists", "dir.txt"),
+    os.path.join("wordlists", "dir_IndexOf.txt"),
+]
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -50,13 +54,15 @@ def run():
     if not target.startswith("http"):
         target = "https://" + target
 
-    if not os.path.exists(WORDLIST):
-        print(f"{Fore.RED}[!] Wordlist tidak ditemukan: {WORDLIST}{Style.RESET_ALL}")
+    wordlist = next((w for w in WORDLISTS if os.path.exists(w)), None)
+    if wordlist is None:
+        print(f"{Fore.RED}[!] Wordlist tidak ditemukan: {WORDLISTS[0]} (atau dir.txt){Style.RESET_ALL}")
         print(f"{Fore.YELLOW}    Taruh file 'webshell_paths.txt' di folder wordlists/{Style.RESET_ALL}")
         return
 
-    with open(WORDLIST, "r", errors="ignore") as f:
+    with open(wordlist, "r", errors="ignore") as f:
         paths = [line.strip() for line in f if line.strip()]
+    print(f"{Fore.YELLOW}[*] Wordlist: {wordlist}{Style.RESET_ALL}")
 
     print(f"{Fore.YELLOW}[*] Total path: {len(paths)}{Style.RESET_ALL}")
     threads = int(input("Threads [default 20]: ").strip() or 20)
