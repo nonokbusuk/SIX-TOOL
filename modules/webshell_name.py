@@ -1,5 +1,7 @@
 """Menu 2 — WebShell Finder (Automatic Filename Enumeration)"""
 import os
+import random
+import string
 import requests
 from colorama import Fore, Style
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -29,6 +31,16 @@ def check_file(base, name, timeout=8):
     return None
 
 
+def get_baseline(target):
+    path = "".join(random.choices(string.ascii_lowercase + string.digits, k=16)) + ".php"
+    try:
+        r = requests.get(target.rstrip("/") + "/" + path, headers=HEADERS, timeout=10, allow_redirects=False)
+        return r
+    except requests.RequestException as e:
+        print(f"{Fore.RED}[!] Target tidak dapat dijangkau: {e}{Style.RESET_ALL}")
+        return None
+
+
 def run():
     print(f"{Fore.CYAN}[*] WebShell Finder — Filename Enumeration{Style.RESET_ALL}")
     target = input("URL target (https://example.com): ").strip()
@@ -47,6 +59,14 @@ def run():
         print(f"{Fore.YELLOW}[*] Wordlist tidak ada, pakai default: {len(names)} nama{Style.RESET_ALL}")
 
     threads = int(input("Threads [default 20]: ").strip() or 20)
+
+    baseline = get_baseline(target)
+    if baseline is None:
+        return
+    soft_404 = baseline.status_code == 200
+    if soft_404:
+        print(f"{Fore.YELLOW}[*] Baseline soft-404: {baseline.status_code} ({len(baseline.content)} bytes){Style.RESET_ALL}")
+
     found = []
 
     with ThreadPoolExecutor(max_workers=threads) as ex:
@@ -55,6 +75,8 @@ def run():
             res = fut.result()
             if res:
                 status, url, size = res
+                if soft_404 and status == 200 and size == len(baseline.content):
+                    continue
                 print(f"{Fore.GREEN}[{status}] {url} ({size} bytes){Style.RESET_ALL}")
                 found.append((status, url))
 
