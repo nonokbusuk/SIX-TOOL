@@ -1,4 +1,5 @@
 """Menu 10 — Grab Domain from zone-h.org"""
+import os
 import requests
 from bs4 import BeautifulSoup
 from colorama import Fore, Style
@@ -23,6 +24,7 @@ def run():
         for d in sorted(domains)[:50]:
             print(f"    {d}")
         if domains:
+            os.makedirs("results", exist_ok=True)
             with open("results/zoneh_domains.txt", "w") as f:
                 f.write("\n".join(sorted(domains)))
             print(f"{Fore.GREEN}[+] Disimpan ke results/zoneh_domains.txt{Style.RESET_ALL}")
