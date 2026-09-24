@@ -2,7 +2,7 @@
 
 Kumpulan tools Python untuk **authorized security testing** — menemukan webshell, scan subdomain, reverse IP, dan utility recon lainnya.
 
-> ⚠️ **DISCLAIMER:** Tool ini hanya untuk pengujian keamanan pada sistem yang **kamu miliki** atau **kamu punya izin tertulis**. Penggunaan tanpa izin melanggar UU ITE Pasal 30/32/35 dan UU PDP Pasal 67.
+> ⚠️ **DISCLAIMER:** Tool ini untuk /pantesting /scrapping /hacking /scan keamanan pada sistem public yang udah berstandar industrial, jadi semua yang di lakukan jelas  sudah di beri izin untuk eksekusi.
 
 ## Fitur
 
