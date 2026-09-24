@@ -1,4 +1,5 @@
 """Menu 6 — Extract Domain (Auto Add https)"""
+import os
 import re
 from urllib.parse import urlparse
 from colorama import Fore, Style
@@ -33,6 +34,7 @@ def run():
             print(f"{Fore.RED}[!] Tidak valid: {line}{Style.RESET_ALL}")
 
     if results:
+        os.makedirs("results", exist_ok=True)
         with open("results/domains.txt", "w") as f:
             f.write("\n".join(results))
         print(f"{Fore.GREEN}[+] Disimpan ke results/domains.txt{Style.RESET_ALL}")
